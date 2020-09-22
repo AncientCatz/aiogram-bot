@@ -27,7 +27,7 @@ async def send_welcome(message: types.Message):
 
 
 
-@dp.message_handler()
+@dp.message_handler(commands['echo'])
 async def echo(message: types.Message):
     # old style:
     # await bot.send_message(message.chat.id, message.text)
