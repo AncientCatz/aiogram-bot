@@ -26,6 +26,11 @@ async def send_welcome(message: types.Message):
     """
     await message.reply("Hi!\nI'm EchoBot!\nPowered by aiogram.")
 
+
+
+async def email(message: types.Message):
+    await message.reply("Your e-mail: %s" % message.text)
+
 @dp.message_handler(Command('greet'))
 async def echo(message: types.Message):
     # old style:
@@ -33,8 +38,6 @@ async def echo(message: types.Message):
 
     await message.answer("Enter your e-mail")
     await email()
-async def email(message: types.Message):
-    await message.reply("Your e-mail: %s" % message.text)
 
 
 if __name__ == '__main__':
