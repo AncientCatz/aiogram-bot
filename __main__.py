@@ -29,15 +29,17 @@ async def send_welcome(message: types.Message):
 
 
 @dp.message_handler(Command('greet'))
-async def echo(message: types.Message):
+async def greet(message: types.Message):
     # old style:
     # await bot.send_message(message.chat.id, message.text)
 
-    await message.answer("Enter your e-mail")
-    async def email(message: types.Message):
-        await message.reply("Your e-mail: %s" % message.text)
+    await message.answer('Enter your e-mail')
+
+@dp.message_handler()
+async def email(message: types.Message):
+    await message.reply('Your e-mail: %s' % message.text)
 
 
 if __name__ == '__main__':
     print("Telegram bot online!")
-    executor.start_polling(dp, skip_updates=True)
+    executor.start_polling(dp, # skip_updates=True)
