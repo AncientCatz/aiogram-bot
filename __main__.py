@@ -7,6 +7,7 @@ import logging
 import os
 
 from aiogram import Bot, Dispatcher, executor, types
+from aiogram.dispatcher.filters import Command
 
 API_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '')
 
@@ -27,7 +28,7 @@ async def send_welcome(message: types.Message):
 
 
 
-@dp.message_handler(commands['echo'])
+@dp.message_handler(Command('echo'))
 async def echo(message: types.Message):
     # old style:
     # await bot.send_message(message.chat.id, message.text)
