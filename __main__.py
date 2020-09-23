@@ -108,7 +108,6 @@ async def greet(message: types.Message):
         await Aiocatz.passed.set()
 
         await message.answer('Welcome dear master')
-        await message.edit_text('here goes your new text')
     # end if
 # end def
 
@@ -140,6 +139,11 @@ async def passed(message: types.Message, state = FSMContext):
     await state.finish()
     await message.answer('Coming soon!')
 # end def
+
+
+@dp.message_handler()
+async def edit(message: types.Message):
+    await message.edit_text('Edited')
 
 
 if __name__ == '__main__':
