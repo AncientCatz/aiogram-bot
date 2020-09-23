@@ -25,7 +25,7 @@ dp = Dispatcher(bot, storage=storage)
 
 # States
 class Aiocatz(StatesGroup):
-    auth = States()
+    auth = State()
 
 
 @dp.message_handler(commands=['start', 'help'])
