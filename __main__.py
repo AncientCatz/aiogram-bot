@@ -58,11 +58,13 @@ async def get_otp(message: types.Message):
 async def greet(message: types.Message):
     # old style:
     # await bot.send_message(message.chat.id, message.text)
-    if message.chat.id not in master:
+    if str(message.chat.id) not in master :
         await message.answer('Sorry you\'re not my master, contact my master to use our services. @AncientCatz')
         await message.answer('Enter your OTP Code')
         await Aiocatz.auth.set()
-    await message.answer('Welcome dear master')
+    else:
+        await message.answer('Welcome dear master')
+        await Aiocatz.passed.set()
     # end if
 # end def
 
