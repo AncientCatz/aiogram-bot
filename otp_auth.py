@@ -24,7 +24,7 @@ def otpCode():
     if key == None:
         pyotp_now = "Secret key not configured"
     else:
-        totp = pyotp.TOTP(key)
+        totp = pyotp.TOTP(key, interval=120)
         pyotp_now = totp.now()
     # end if
     return pyotp_now
@@ -35,7 +35,7 @@ def otpVerify(otp):
     if key == None:
         pyotp_verify = False
     else:
-        totp = pyotp.TOTP(key)
+        totp = pyotp.TOTP(key, interval=120)
         pyotp_verify = totp.verify(otp)
     # end if
     return pyotp_verify
