@@ -11,6 +11,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.api.types.user import User
 
 API_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '')
 
@@ -49,6 +50,11 @@ async def email(message: types.Message, state = FSMContext):
     await message.reply('Your e-mail: %s' % message.text)
     await state.finish()
 
+
+@dp.message_handler(Command('info')):
+async def info(message: types.Message):
+    user = User(id=chat.id)
+    await message.reply(user)
 
 if __name__ == '__main__':
     print("Telegram bot online!")
