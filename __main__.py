@@ -42,7 +42,6 @@ async def send_welcome(message: types.Message):
     This handler will be called when user sends `/start` or `/help` command
     """
     await message.reply("Hi!\nI'm Aiocatz!\nPowered by aiogram.")
-    await message.edit_text('here goes your new text')
 # end def
 
 
@@ -109,6 +108,7 @@ async def greet(message: types.Message):
         await Aiocatz.passed.set()
 
         await message.answer('Welcome dear master')
+        await message.edit_text('here goes your new text')
     # end if
 # end def
 
