@@ -9,7 +9,7 @@ import os
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters import Command
+from aiogram.dispatcher.filters import Command, Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from otp_auth import (otpCode, otpVerify)
 
