@@ -26,7 +26,7 @@ dp = Dispatcher(bot, storage=storage)
 
 # Master
 master = [
-    # '822518127',
+    '822518127',
 ]
 
 
@@ -49,8 +49,20 @@ async def send_welcome(message: types.Message):
 @dp.message_handler(commands=['otp'])
 async def get_otp(message: types.Message):
     otp = otpCode()
-    await message.reply(otp)
+    if message.chat.id not in master :
+        await message.answer('Sorry you\'re not my master, you\'re not allowed to use this command')
+    else:
+        await message.reply(
+            '%s' % otp
+        )
 # end def
+
+
+
+@dp.message_handler(commands=['give'])
+async def give(message: types.Message):
+    argument = message.get_args()
+    await message.answer(argument)
 
 
 
@@ -76,7 +88,7 @@ async def greet(message: types.Message):
     if str(message.chat.id) not in master :
         await Aiocatz.auth.set()
 
-        await message.answer('Sorry you\'re not my master, contact my master to use our services. @AncientCatz')
+        await message.answer('Sorry you\'re not my master, send your ID:`{message.chat.id}` to my master to use our services. @AncientCatz')
         await message.answer(
             'Enter your OTP Code'
             'To cancel send /cancel'
