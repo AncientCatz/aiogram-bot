@@ -26,7 +26,7 @@ dp = Dispatcher(bot, storage=storage)
 
 # Master
 master = [
-    '822518127',
+    # '822518127',
 ]
 
 
