@@ -51,7 +51,7 @@ async def email(message: types.Message, state = FSMContext):
     await state.finish()
 
 
-@dp.message_handler(Command('info')):
+@dp.message_handler(Command('info'))
 async def info(message: types.Message):
     user = User(id=chat.id)
     await message.reply(user)
