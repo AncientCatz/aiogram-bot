@@ -83,7 +83,7 @@ async def otp_verify(message: types.Message, state = FSMContext):
 # end def
 
 @dp.message_handler(state=Aiocatz.passed)
-async def passed(message: types.Message):
+async def passed(message: types.Message, state = FSMContext):
     await message.answer('Coming soon!')
     await state.finish()
 # end def
