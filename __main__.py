@@ -141,9 +141,10 @@ async def passed(message: types.Message, state = FSMContext):
 # end def
 
 
-@dp.message_handler()
+@dp.message_handler(commands=['test'])
 async def edit(message: types.Message):
-    await message.edit_text('Edited')
+    msg = await message.answer('Origin')
+    await msg.edit_text('Edited')
 
 
 if __name__ == '__main__':
