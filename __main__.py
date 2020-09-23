@@ -5,6 +5,7 @@ It echoes any incoming text messages.
 
 import logging
 import os
+import time
 
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
@@ -141,10 +142,13 @@ async def passed(message: types.Message, state = FSMContext):
 # end def
 
 
-@dp.message_handler(commands=['test'])
+@dp.message_handler(commands=['loop'])
 async def edit(message: types.Message):
-    msg = await message.answer('Origin')
-    await msg.edit_text('Edited')
+    num_list = ['1', '2', '3', '4', '5']
+    msg = await message.answer('0')
+    for x in num_list:
+        await msg.edit_text(x)
+        time.sleep(2)
 
 
 if __name__ == '__main__':
