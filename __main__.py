@@ -46,7 +46,7 @@ async def send_welcome(message: types.Message):
 
 
 
-@dp.message_handler(state='*', Command('otp'))
+@dp.message_handler(commands=['otp'])
 async def get_otp(message: types.Message):
     otp = otpCode()
     await message.reply(otp)
