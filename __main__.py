@@ -61,8 +61,8 @@ async def get_otp(message: types.Message):
 
 @dp.message_handler(commands=['give'])
 async def give(message: types.Message):
-    argument = message.get_args()
-    await message.answer(argument)
+    id = message.get_args()
+    await message.send_message(id, 'Test')
 
 
 
