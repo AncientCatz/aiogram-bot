@@ -49,12 +49,13 @@ async def send_welcome(message: types.Message):
 @dp.message_handler(commands=['otp'])
 async def get_otp(message: types.Message):
     otp = otpCode()
-    if message.chat.id not in master :
+    if str(message.chat.id) not in master :
         await message.answer('Sorry you\'re not my master, you\'re not allowed to use this command')
     else:
         await message.reply(
             '%s' % otp
         )
+    # end if
 # end def
 
 
@@ -63,12 +64,14 @@ async def get_otp(message: types.Message):
 async def give(message: types.Message):
     id = message.get_args()
     otp = otpCode()
-    if message.chat.id not in master :
+    if str(message.chat.id) not in master :
         await message.answer('Sorry you\'re not my master, you\'re not allowed to use this command')
     else:
         await bot.send_message(
             id, '%s' % otp
         )
+    # end if
+# end def
 
 
 
@@ -78,12 +81,14 @@ async def cancel_handler(message: types.Message, state: FSMContext):
     current_state = await state.get_state()
     if current_state is None:
         return
+    # end if
 
     logging.info('Cancelling state %r', current_state)
     # Cancel state and inform user about it
     await state.finish()
     # And remove keyboard (just in case)
     await message.reply('Cancelled. Send /new to start a new session', reply_markup=types.ReplyKeyboardRemove())
+# end def
 
 
 
