@@ -76,7 +76,9 @@ async def otp_verify_invalid(message: types.Message):
 @dp.message_handler(lambda message: message.text.isdigit(), state=Aiocatz.auth)
 async def otp_verify(message: types.Message, state = FSMContext):
     otp = message.text
-    if otpVerify(otp) == True:
+    if otpVerify(otp) == False:
+        await message.reply('Invalid OTP Code')
+    elif otpVerify(otp) == True:
         await message.answer('Authenticated, you can use our service for one session')
         await Aiocatz.next()
     # end if
