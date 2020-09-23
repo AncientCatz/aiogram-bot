@@ -62,7 +62,13 @@ async def get_otp(message: types.Message):
 @dp.message_handler(commands=['give'])
 async def give(message: types.Message):
     id = message.get_args()
-    await bot.send_message(id, 'Test')
+    otp = otpCode()
+    if message.chat.id not in master :
+        await message.answer('Sorry you\'re not my master, you\'re not allowed to use this command')
+    else:
+        await bot.send_message(
+            id, '%s' % otp
+        )
 
 
 
