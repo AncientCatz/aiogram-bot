@@ -150,7 +150,7 @@ async def edit(message: types.Message):
     total = int(message.get_args().split()[1:][0])
     msg = await message.answer('Processing…')
     while i < total:
-        await msg.edit_text(progress(i, total, status='Loading...')
+        await msg.edit_text(progress(i, total, status='Loading...'))
         time.sleep(0.2)
         i += 1
 
