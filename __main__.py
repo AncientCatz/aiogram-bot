@@ -14,6 +14,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command, Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from otp_auth import (otpCode, otpVerify)
+from loading_bar import progress
 
 API_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '')
 
@@ -143,13 +144,9 @@ async def passed(message: types.Message, state = FSMContext):
 # end def
 
 
-@dp.message_handler(commands=['loop'])
+@dp.message_handler(commands=['args_cmd'])
 async def edit(message: types.Message):
-    num_list = ['1', '2', '3', '4', '5']
-    msg = await message.answer('0')
-    for x in num_list:
-        await msg.edit_text(x)
-        time.sleep(2)
+    await message.answer(message.get_args())
 
 
 

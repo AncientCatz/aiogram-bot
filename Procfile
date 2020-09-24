@@ -1,1 +1,1 @@
-bot: python __main__.py
+bot: python .
