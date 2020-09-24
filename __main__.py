@@ -146,10 +146,9 @@ async def passed(message: types.Message, state = FSMContext):
 
 @dp.message_handler(commands=['loading'])
 async def edit(message: types.Message):
-    i = message.get_args().split()[:1][0]
-    total = message.get_args().split()[1:][0]
-    msg = await message.answer(progress(i, total, status='Loading...')
-    i = i + 1
+    i = int(message.get_args().split()[:1][0])
+    total = int(message.get_args().split()[1:][0])
+    msg = await message.answer('Processing…')
     while i < total:
         await msg.edit_text(progress(i, total, status='Loading...')
         time.sleep(0.2)
