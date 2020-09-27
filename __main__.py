@@ -198,7 +198,7 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
 @dp.message_handler(Command('trigger'))
 async def trigger(message: types.Message):
     await message.answer('Trigger…')
-    return self.trigger_on(message: types.Message)
+    return self.trigger_on()
 
 async def trigger_on(message: types.Message):
     await message.answer('ON!')
