@@ -195,6 +195,13 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
 
     await bot.send_message(query.from_user.id, text)
 
+@dp.message_handler(Command('trigger'))
+async def trigger(message: types.Message):
+    await message.answer('Trigger…')
+    return self.trigger_on(message: types.Message)
+
+async def trigger_on(message: types.Message):
+    await message.answer('ON!')
 
 if __name__ == '__main__':
     print("Telegram bot online!")
