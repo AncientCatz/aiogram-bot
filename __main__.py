@@ -15,6 +15,7 @@ from aiogram.dispatcher.filters import Command, Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from otp_auth import (otpCode, otpVerify)
 from loading_bar import progress
+from wp_plus import warp_plus
 
 API_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '')
 
@@ -110,7 +111,14 @@ async def greet(message: types.Message):
     else:
         await Aiocatz.passed.set()
 
-        await message.answer('Welcome dear master')
+        keyboard_markup = types.InlineKeyboardMarkup(row_width=3)
+        text_and_data = (
+            ('WARP+ CloudFlare', 'warp'),
+        )
+        row_btns = (types.InlineKeyboardButton(text, callback_data=data) for text, data in text_and_data)
+        keyboard_markup.row(*row_btns)
+        query_msg = await message.answer('Welcome dear master', reply_markup=keyboard_markup)
+        return query_msg
     # end if
 # end def
 
@@ -121,6 +129,7 @@ async def otp_verify_invalid(message: types.Message):
         'To cancel send /cancel.'
     )
 # end def
+
 
 @dp.message_handler(lambda message: message.text.isdigit(), state=Aiocatz.auth)
 async def otp_verify(message: types.Message, state = FSMContext):
@@ -133,15 +142,74 @@ async def otp_verify(message: types.Message, state = FSMContext):
     elif otpVerify(otp) == True:
         await Aiocatz.next()
 
-        await message.answer('Authenticated, you can use our service for one session')
+        keyboard_markup = types.InlineKeyboardMarkup(row_width=3)
+        text_and_data = (
+            ('WARP+ CloudFlare', 'warp'),
+        )
+        row_btns = (types.InlineKeyboardButton(text, callback_data=data) for text, data in text_and_data)
+        keyboard_markup.row(*row_btns)
+        query_msg = await message.answer('Authenticated, you can use our service for one session.', reply_markup=keyboard_markup)
+        return query_msg
     # end if
 # end def
 
-@dp.message_handler(state=Aiocatz.passed)
-async def passed(message: types.Message, state = FSMContext):
-    await state.finish()
-    await message.answer('Coming soon!')
+
+@dp.callback_query_handler(state=Aiocatz.passed, text='warp')  # if cb.data == 'warp'
+async def inline_kb_answer_callback_handler(query: types.CallbackQuery, state = FSMContext):
+    answer_data = query.data
+    # always answer callback queries, even if you have nothing to say
+    await query.answer(f'Processing…')
+
+    if answer_data == 'warp':
+        await query_msg.delete()
+        text = 'Enter your ID'
+        await Aiocatz.next()
+    else:
+        text = f'Unexpected callback data {answer_data!r}!'
+
+    await bot.send_message(query.from_user.id, text)
 # end def
+
+
+@dp.message_handler(state=Aiocatz.warp)
+async def warp(message: types.Message):
+    referrer = message.text.strip()
+    msg = await message.reply('Preparing…')
+    for _ in itertools.repeat(None, 5):
+        i = 0
+        t = 10
+        g = 0
+        b = 0
+        if i != 0:
+            i = 0
+        # end if
+        while i <= o:
+            await msg.edit_text('%d Good %d Bad\n%s' % g, b, progress(i, t, status='Processing…'))
+            time.sleep(0.2)
+            i += 1
+        # end while
+        if i != 0:
+            i = 0
+        # end if
+        cd = 18
+        if cd != 18:
+            cd = 18
+        # end if
+        while i <= 18:
+            result = warp_plus(referrer)
+            if result == 200:
+                g = g + 1
+                cd = cd - 1
+                await msg.edit_text('%d Good %d Bad\n%s' % g, b, f'After {cd} seconds, a new request will be sent.')
+                time.sleep(1)
+            else:
+                b = b + 1
+                await msg.edit_text('%d Good %d Bad\n%s' % g, b, 'Error when connecting to server.')
+            # end if
+        # end while
+    # end for
+# end def
+        
 
 
 @dp.message_handler(commands=['loading'])
@@ -194,14 +262,6 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
         text = f'Unexpected callback data {answer_data!r}!'
 
     await bot.send_message(query.from_user.id, text)
-
-@dp.message_handler(Command('trigger'))
-async def trigger(message: types.Message):
-    await message.answer('Trigger…')
-    return trigger_on()
-
-async def trigger_on(message: types.Message):
-    await message.answer('ON!')
 
 if __name__ == '__main__':
     print("Telegram bot online!")
