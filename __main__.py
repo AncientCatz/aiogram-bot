@@ -159,7 +159,7 @@ async def edit(message: types.Message):
         await msg.edit_text('%d Good · %d Bad\n' % (g, b) + str(progress(i, total, status='After 18 seconds, a new request will be sent.')))
         if i == 5:
             time.sleep(0.2)
-            await msg.edit_text('%d Good %d Bad\nFinished.' % g, b)
+            await msg.edit_text('%d Good %d Bad\nFinished.' % (g, b))
             await state.finish()
         time.sleep(3)
         
