@@ -38,6 +38,7 @@ master = [
 class Aiocatz(StatesGroup):
     auth = State()
     passed = State()
+    warp = State()
 # end class
 
 @dp.message_handler(commands=['start', 'help'])
@@ -172,7 +173,7 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery, state = 
 
 
 @dp.message_handler(state=Aiocatz.warp)
-async def warp(message: types.Message):
+async def warp(message: types.Message, state: FSMContext):
     referrer = message.text.strip()
     msg = await message.reply('Preparing…')
     for _ in itertools.repeat(None, 5):
