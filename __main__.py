@@ -141,10 +141,10 @@ async def otp_verify(message: types.Message, state = FSMContext):
 # end def
 
 
-@dp.message_handler(state=LNCrawl.passed, commands=['warp_plus'])
+@dp.message_handler(state=Aiocatz.passed, commands=['warp_plus'])
 async def edit(message: types.Message):
     referrer = message.get_args().strip()
-    i = 0
+    i = 1
     total = 5
     g = 0
     b = 0
