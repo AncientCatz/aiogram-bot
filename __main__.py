@@ -39,7 +39,6 @@ master = [
 class Aiocatz(StatesGroup):
     auth = State()
     passed = State()
-    warp = State()
 # end class
 
 @dp.message_handler(commands=['start', 'help'])
@@ -47,7 +46,7 @@ async def send_welcome(message: types.Message):
     """
     This handler will be called when user sends `/start` or `/help` command
     """
-    await message.reply("Hi!\nI'm Aiocatz!\nPowered by aiogram.")
+    await message.reply("Hi!\nI'm Aiocatz!\nSend /new to start a new session.")
 # end def
 
 
@@ -113,13 +112,7 @@ async def greet(message: types.Message):
     else:
         await Aiocatz.passed.set()
 
-        keyboard_markup = types.InlineKeyboardMarkup(row_width=3)
-        text_and_data = (
-            ('WARP+ CloudFlare', 'warp'),
-        )
-        row_btns = (types.InlineKeyboardButton(text, callback_data=data) for text, data in text_and_data)
-        keyboard_markup.row(*row_btns)
-        await message.answer('Welcome dear master', reply_markup=keyboard_markup)
+        await message.answer('Welcome dear master')
     # end if
 # end def
 
@@ -143,34 +136,12 @@ async def otp_verify(message: types.Message, state = FSMContext):
     elif otpVerify(otp) == True:
         await Aiocatz.next()
 
-        keyboard_markup = types.InlineKeyboardMarkup(row_width=3)
-        text_and_data = (
-            ('WARP+ CloudFlare', 'warp'),
-        )
-        row_btns = (types.InlineKeyboardButton(text, callback_data=data) for text, data in text_and_data)
-        keyboard_markup.row(*row_btns)
-        await message.answer('Authenticated, you can use our service for one session.', reply_markup=keyboard_markup)
+        await message.answer('Authenticated, you can use our service for one session.\n/warp_plus <ID>')
     # end if
 # end def
 
 
-@dp.callback_query_handler(state=Aiocatz.passed, text='warp')  # if cb.data == 'warp'
-async def inline_kb_answer_callback_handler(query: types.CallbackQuery, state = FSMContext):
-    answer_data = query.data
-    # always answer callback queries, even if you have nothing to say
-    await query.answer(f'Processing…')
-
-    if answer_data == 'warp':
-        text = 'Enter your ID'
-        await Aiocatz.next()
-    else:
-        text = f'Unexpected callback data {answer_data!r}!'
-
-    await bot.send_message(query.from_user.id, text)
-# end def
-
-
-@dp.message_handler(commands=['warp_plus'])
+@dp.message_handler(state=LNCrawl.passed, commands=['warp_plus'])
 async def edit(message: types.Message):
     referrer = message.get_args().strip()
     i = 0
@@ -181,12 +152,13 @@ async def edit(message: types.Message):
     while i <= total:
         result = warp_plus(referrer)
         if result == 200:
-            g += 1
+            g = g + 1
         else:
-            b += 1
-        await msg.edit_text('%d Good %d Bad\n' % (g, b) + str(progress(i, total, status='Loading...')))
-        time.sleep(18)
+            b = b + 1
         i += 1
+        await msg.edit_text('%d Good %d Bad\n' % (g, b) + str(progress(i, total, status='After 18 seconds, a new request will be sent.')))
+        time.sleep(18)
+    await state.finish()
         
 
 
