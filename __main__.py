@@ -174,25 +174,29 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery, state = 
 async def warp(message: types.Message, state: FSMContext):
     referrer = message.text.strip()
     msg = await message.reply('Preparing…')
-    i = 0
-    for _ in itertools.repeat(None, 5):
+    c = 0
+    while c <= 5:
         i = 0
         total = 10
         g = 0
         b = 0
         while i >= total:
-            await msg.edit_text(f'{g} Good {b}\n{progress(i, total, status="")}')
+            s = progress(i, total, status="")
+            await msg.edit_text(f'{g} Good {b}\n{s}')
             time.sleep(0.2)
             i += 1
         # end while
         result = warp_plus(referrer)
         if result == 200:
             g = g + 1
-            await msg.edit_text(f'{g} Good {b}\n{progress(i, total, status="After 18 seconds, a new request will be sent.")}')
+            ss = progress(i, total, status="After 18 seconds, a new request will be sent.")
+            await msg.edit_text(f'{g} Good {b}\n{ss}')
             time.sleep(18)
         else:
             b = b + 1
-            await msg.edit_text(f'{g} Good {b}\n{progress(i, total, status="Error when connecting to server.")}')
+            sss = progress(i, total, status="Error when connecting to server.")
+            await msg.edit_text(f'{g} Good {b}\n{sss}')
+        c += 1
         # end if
     # end for
 # end def
