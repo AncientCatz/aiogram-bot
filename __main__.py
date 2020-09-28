@@ -181,18 +181,18 @@ async def warp(message: types.Message, state: FSMContext):
         g = 0
         b = 0
         while i >= total:
-            msg.edit_text(f'{g} Good {b}\n{progress(i, total, status="")}')
+            await msg.edit_text(f'{g} Good {b}\n{progress(i, total, status="")}')
             time.sleep(0.2)
             i += 1
         # end while
         result = warp_plus(referrer)
         if result == 200:
             g = g + 1
-            msg.edit_text(f'{g} Good {b}\n{progress(i, total, status="After 18 seconds, a new request will be sent.")}')
+            await msg.edit_text(f'{g} Good {b}\n{progress(i, total, status="After 18 seconds, a new request will be sent.")}')
             time.sleep(18)
         else:
             b = b + 1
-            msg.edit_text(f'{g} Good {b}\n{progress(i, total, status="Error when connecting to server.")}')
+            await msg.edit_text(f'{g} Good {b}\n{progress(i, total, status="Error when connecting to server.")}')
         # end if
     # end for
 # end def
