@@ -149,15 +149,15 @@ async def edit(message: types.Message):
     g = 0
     b = 0
     msg = await message.answer('Processing…')
-    while i <= total:
+    while i < total:
         result = warp_plus(referrer)
         if result == 200:
             g = g + 1
         else:
             b = b + 1
         i += 1
-        await msg.edit_text('%d Good %d Bad\n' % (g, b) + str(progress(i, total, status='After 18 seconds, a new request will be sent.')))
-        time.sleep(18)
+        await msg.edit_text('%d Good · %d Bad\n' % (g, b) + str(progress(i, total, status='After 18 seconds, a new request will be sent.')))
+        time.sleep(3)
     await state.finish()
     await msg.edit_text('%d Good %d Bad\nFinished.' % g, b)
         
