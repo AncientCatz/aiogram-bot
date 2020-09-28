@@ -170,36 +170,23 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery, state = 
 # end def
 
 
-@dp.message_handler(state=Aiocatz.warp)
-async def warp(message: types.Message, state: FSMContext):
-    referrer = message.text.strip()
-    msg = await message.reply('Preparing…')
-    c = 0
-    while c <= 5:
-        i = 0
-        total = 10
-        g = 0
-        b = 0
-        while i >= total:
-            s = progress(i, total, status="")
-            await msg.edit_text(f'{g} Good {b}\n{s}')
-            time.sleep(0.2)
-            i += 1
-        # end while
+@dp.message_handler(commands=['warp_plus'])
+async def edit(message: types.Message):
+    referrer = message.get_args().strip()
+    i = 0
+    total = 5
+    g = 0
+    b = 0
+    msg = await message.answer('Processing…')
+    while i <= total:
         result = warp_plus(referrer)
         if result == 200:
-            g = g + 1
-            ss = progress(i, total, status="After 18 seconds, a new request will be sent.")
-            await msg.edit_text(f'{g} Good {b}\n{ss}')
-            time.sleep(18)
+            g += 1
         else:
-            b = b + 1
-            sss = progress(i, total, status="Error when connecting to server.")
-            await msg.edit_text(f'{g} Good {b}\n{sss}')
-        c += 1
-        # end if
-    # end for
-# end def
+            b += 1
+        await msg.edit_text('%d Good %d Bad\n' % (g, b) + str(progress(i, total, status='Loading...')))
+        time.sleep(18)
+        i += 1
         
 
 
