@@ -118,8 +118,7 @@ async def greet(message: types.Message):
         )
         row_btns = (types.InlineKeyboardButton(text, callback_data=data) for text, data in text_and_data)
         keyboard_markup.row(*row_btns)
-        query_msg = await message.answer('Welcome dear master', reply_markup=keyboard_markup)
-        return query_msg
+        await message.answer('Welcome dear master', reply_markup=keyboard_markup)
     # end if
 # end def
 
@@ -149,8 +148,7 @@ async def otp_verify(message: types.Message, state = FSMContext):
         )
         row_btns = (types.InlineKeyboardButton(text, callback_data=data) for text, data in text_and_data)
         keyboard_markup.row(*row_btns)
-        query_msg = await message.answer('Authenticated, you can use our service for one session.', reply_markup=keyboard_markup)
-        return query_msg
+        await message.answer('Authenticated, you can use our service for one session.', reply_markup=keyboard_markup)
     # end if
 # end def
 
@@ -162,7 +160,6 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery, state = 
     await query.answer(f'Processing…')
 
     if answer_data == 'warp':
-        await query_msg.delete()
         text = 'Enter your ID'
         await Aiocatz.next()
     else:
