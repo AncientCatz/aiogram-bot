@@ -182,8 +182,9 @@ async def warp(message: types.Message, state: FSMContext):
         if i != 0:
             i = 0
         # end if
+        ui = progress(i, t, status='Processing…')
         while i <= t:
-            await msg.edit_text('%d Good %d Bad\n%s' % g, b, progress(i, t, status='Processing…'))
+            await msg.edit_text('%d Good %d Bad\n%s' % g, b, ui)
             time.sleep(0.2)
             i += 1
         # end while
