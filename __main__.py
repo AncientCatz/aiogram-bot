@@ -143,14 +143,16 @@ async def otp_verify(message: types.Message, state = FSMContext):
 
 @dp.message_handler(state=Aiocatz.passed, commands=['warp_plus'])
 async def edit(message: types.Message):
-    referrer = message.get_args().strip()
+    referrer = message.get_args()
+    if not referrer:
+        raise Exception('Nothing entered.')
     i = 0
     total = 5
     g = 0
     b = 0
     msg = await message.answer('Processing…')
     while i < total:
-        result = warp_plus(referrer)
+        result = warp_plus(referrer.strip())
         if result == 200:
             g = g + 1
         else:
@@ -159,7 +161,7 @@ async def edit(message: types.Message):
         await msg.edit_text('%d Good · %d Bad\n' % (g, b) + str(progress(i, total, status='After 18 seconds, a new request will be sent.')))
         if i == 5:
             time.sleep(0.2)
-            await msg.edit_text('%d Good %d Bad\nFinished.' % (g, b))
+            await msg.edit_text('%d Good %d Bad\nFinished. Send /new to start a new session.' % (g, b))
             await state.finish()
         time.sleep(3)
         
