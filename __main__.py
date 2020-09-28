@@ -163,9 +163,7 @@ async def edit(message: types.Message, state: FSMContext):
         if i == 5:
             time.sleep(0.2)
             await msg.edit_text('%d Good %d Bad\nFinished. Send /new to start a new session.' % (g, b))
-            await state.finish()
-        time.sleep(3)
-    await state.finish()
+        time.sleep(18)
         
 
 
