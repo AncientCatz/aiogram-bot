@@ -4,6 +4,7 @@ This is a echo bot.
 It echoes any incoming text messages.
 """
 
+import itertools
 import logging
 import os
 import time
