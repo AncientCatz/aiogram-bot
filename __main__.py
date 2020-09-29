@@ -39,6 +39,7 @@ master = [
 class Aiocatz(StatesGroup):
     auth = State()
     passed = State()
+    inline_edit = State()
 # end class
 
 @dp.message_handler(commands=['start', 'help'])
@@ -181,6 +182,7 @@ async def edit(message: types.Message):
 
 @dp.message_handler(commands=['kb'])
 async def kb(message: types.Message):
+    await Aiocatz.inline_edit.set()
     keyboard_markup = types.InlineKeyboardMarkup(row_width=3)
     text_and_data = (
         ('Capitalize!', 'capitalize'),
@@ -189,10 +191,11 @@ async def kb(message: types.Message):
     keyboard_markup.row(*row_btns)
 
     msg = await message.reply("Hello world", reply_markup=keyboard_markup)
-    return msg.message_id
+    async with state.proxy() as data:
+        data['message_id'] = msg.message_id
 
-@dp.callback_query_handler(text='capitalize')  # if cb.data == 'yes'
-async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
+@dp.callback_query_handler(state=Aiocatz.inline_edit, text='capitalize')  # if cb.data == 'yes'
+async def inline_kb_answer_callback_handler(query: types.CallbackQuery, state: FSMContext):
     answer_data = query.data
     # always answer callback queries, even if you have nothing to say
     await query.answer(f'You answered with {answer_data!r}')
@@ -208,7 +211,8 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
     else:
         text = f'Unexpected callback data {answer_data!r}!'
 
-    await bot.edit_message_text(query.from_user.id, msg.message_id, text, reply_markup=keyboard_markup)
+    await bot.edit_message_text(query.from_user.id, data['message_id'], text, reply_markup=keyboard_markup)
+    await state.finish()
 
 
 @dp.message_handler(commands='inline_kb')
