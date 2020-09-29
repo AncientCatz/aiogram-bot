@@ -181,7 +181,7 @@ async def edit(message: types.Message):
 
 
 @dp.message_handler(commands=['kb'])
-async def kb(message: types.Message):
+async def kb(message: types.Message, state: FSMContext):
     await Aiocatz.inline_edit.set()
     keyboard_markup = types.InlineKeyboardMarkup(row_width=3)
     text_and_data = (
