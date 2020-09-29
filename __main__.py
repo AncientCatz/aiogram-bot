@@ -208,7 +208,7 @@ async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
     else:
         text = f'Unexpected callback data {answer_data!r}!'
 
-    await bot.message_edit_text(query.from_user.id, msg.message_id, text, reply_markup=keyboard_markup)
+    await bot.edit_message_text(query.from_user.id, msg.message_id, text, reply_markup=keyboard_markup)
 
 
 @dp.message_handler(commands='inline_kb')
