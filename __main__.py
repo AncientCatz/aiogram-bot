@@ -179,6 +179,38 @@ async def edit(message: types.Message):
 
 
 
+@dp.message_handler(commands=['kb'])
+async def kb(message: types.Message):
+    keyboard_markup = types.InlineKeyboardMarkup(row_width=3)
+    text_and_data = (
+        ('Capitalize!', 'capitalize'),
+    )
+    row_btns = (types.InlineKeyboardButton(text, callback_data=data) for text, data in text_and_data)
+    keyboard_markup.row(*row_btns)
+
+    msg = await message.reply("Hello world", reply_markup=keyboard_markup)
+    return msg.message_id
+
+@dp.callback_query_handler(text='capitalize')  # if cb.data == 'yes'
+async def inline_kb_answer_callback_handler(query: types.CallbackQuery):
+    answer_data = query.data
+    # always answer callback queries, even if you have nothing to say
+    await query.answer(f'You answered with {answer_data!r}')
+
+    if answer_data == 'capitalize':
+        text = 'HELLO WORLD'
+        keyboard_markup = types.InlineKeyboardMarkup(row_width=3)
+        text_and_data = (
+            ('Capitalize!', 'capitalize'),
+        )
+        row_btns = (types.InlineKeyboardButton(text, callback_data=data) for text, data in text_and_data)
+        keyboard_markup.row(*row_btns)
+    else:
+        text = f'Unexpected callback data {answer_data!r}!'
+
+    await bot.message_edit_text(query.from_user.id, msg.message_id, text, reply_markup=keyboard_markup)
+
+
 @dp.message_handler(commands='inline_kb')
 async def start_cmd_handler(message: types.Message):
     keyboard_markup = types.InlineKeyboardMarkup(row_width=3)
