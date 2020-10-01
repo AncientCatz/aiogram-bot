@@ -105,9 +105,9 @@ async def greet(message: types.Message):
     if str(message.chat.id) not in master :
         await Aiocatz.auth.set()
 
-        await message.answer('Sorry you\'re not my master, send your ID:`{message.chat.id}` to my master to use our services. @AncientCatz')
+        await message.answer(f'Sorry you\'re not my master, send your ID:`{message.chat.id}` to my master to use our services. @AncientCatz')
         await message.answer(
-            'Enter your OTP Code'
+            'Enter your OTP Code\n' +
             'To cancel send /cancel'
         )
     else:
@@ -120,7 +120,7 @@ async def greet(message: types.Message):
 @dp.message_handler(lambda message: not message.text.isdigit(), state=Aiocatz.auth)
 async def otp_verify_invalid(message: types.Message):
     await message.reply(
-        'OTP Code gotta be a number (digits only).\n'
+        'OTP Code gotta be a number (digits only).\n' +
         'To cancel send /cancel.'
     )
 # end def
@@ -131,7 +131,7 @@ async def otp_verify(message: types.Message, state = FSMContext):
     otp = message.text
     if otpVerify(otp) == False:
         await message.reply(
-            'Invalid OTP Code'
+            'Invalid OTP Code\n' +
             'To cancel send /cancel'
         )
     elif otpVerify(otp) == True:
@@ -148,8 +148,15 @@ async def edit(message: types.Message, state: FSMContext):
     if not referrer:
         await message.reply('ID not entered')
         return
+    total = message.get_args().split()[1:][0]
+    if not total:
+        total = 1
+    if not isinstance(total, int):
+        total = int(total)
+    if str(message.chat.id) not in master :
+        if total >= 10:
+            total = 10
     i = 0
-    total = int(message.get_args().split()[1:][0])
     g = 0
     b = 0
     msg = await message.answer('Processing…')
@@ -164,6 +171,7 @@ async def edit(message: types.Message, state: FSMContext):
         if i == 5:
             time.sleep(0.2)
             await msg.edit_text('%d Good %d Bad\nFinished. Send /new to start a new session.' % (g, b))
+            await state.finish()
         time.sleep(18)
         
 
